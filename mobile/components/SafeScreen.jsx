@@ -8,10 +8,10 @@ export default SafeScreen = ({ children }) => {
   return (
     <View
       style={{
+        backgroundColor: COLORS.background,
+        flex: 1,
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
-        flex: 1,
-        backgroundColor: COLORS.background,
       }}
     >
       {children}
