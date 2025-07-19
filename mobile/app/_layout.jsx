@@ -7,8 +7,8 @@ import { StatusBar } from "expo-status-bar";
 export default function RootLayout() {
   return (
     <ClerkProvider tokenCache={tokenCache}>
-      <StatusBar style="dark" />
       <SafeScreen>
+        <StatusBar style="dark" />
         <Slot />
       </SafeScreen>
     </ClerkProvider>
