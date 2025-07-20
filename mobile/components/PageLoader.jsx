@@ -9,7 +9,7 @@ export default function PageLoader() {
         source={require("../constants/Loader.json")}
         style={{ width: 200, height: 200 }}
         autoPlay
-        loop={false}
+        loop={true}
       />
     </View>
   );
