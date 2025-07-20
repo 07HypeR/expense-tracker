@@ -18,6 +18,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { BalanceCard } from "../../components/BalanceCard";
 import { TransactionItem } from "../../components/TransactionItem";
 import NoTransactionsFound from "../../components/NoTransactionsFound";
+import { COLORS } from "@/constants/colors";
 
 export default function Home() {
   const { user } = useUser();
@@ -103,7 +104,12 @@ export default function Home() {
         ListEmptyComponent={<NoTransactionsFound />}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+            colors={[COLORS.primary]}
+          />
         }
       />
     </View>
