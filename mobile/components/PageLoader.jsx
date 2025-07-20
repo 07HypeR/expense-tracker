@@ -1,16 +1,11 @@
 import { View, ActivityIndicator } from "react-native";
 import { styles } from "../assets/styles/home.styles";
-import LottieView from "lottie-react-native";
+import { COLORS } from "@/constants/colors";
 
 export default function PageLoader() {
   return (
     <View style={styles.loadingContainer}>
-      <LottieView
-        source={require("../constants/Loader.json")}
-        style={{ width: 200, height: 200 }}
-        autoPlay
-        loop={true}
-      />
+      <ActivityIndicator size="large" color={COLORS.primary} />
     </View>
   );
 }
