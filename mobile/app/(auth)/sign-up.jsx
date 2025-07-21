@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useState, useEffect } from "react";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { styles } from "@/assets/styles/auth.styles.js";
@@ -19,6 +19,13 @@ export default function SignUpScreen() {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   const onSignUpPress = async () => {
     if (!isLoaded) return;
@@ -40,6 +47,10 @@ export default function SignUpScreen() {
         setError("Please enter a valid email address.");
       } else if (err.errors?.[0]?.code === "form_username_invalid_length") {
         setError("Username must be between 3 and 30 characters.");
+      } else if (err.errors?.[0]?.code === "form_username_invalid_character") {
+        setError(
+          "Username can only contain letters, numbers, and underscores."
+        );
       } else if (err.errors?.[0]?.code === "form_password_length_too_short") {
         setError("Passwords must be 8 characters or more.");
       } else if (!username || !emailAddress || !password) {
@@ -48,6 +59,7 @@ export default function SignUpScreen() {
         setError("An error occurred. Please try again.");
       }
       console.log(err);
+      console.error(JSON.stringify(err, null, 2));
     } finally {
       setIsLoading(false);
     }
