@@ -70,7 +70,8 @@ export default function Home() {
             <View style={styles.welcomeContainer}>
               <Text style={styles.welcomeText}>Welcome,</Text>
               <Text style={styles.usernameText}>
-                {user?.emailAddresses[0]?.emailAddress.split("@")[0]}
+                {user?.username.charAt(0).toUpperCase() +
+                  user?.username.slice(1)}
               </Text>
             </View>
           </View>

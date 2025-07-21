@@ -1,11 +1,12 @@
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import { Text, TextInput, TouchableOpacity, View, Image } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles } from "../../assets/styles/auth.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../constants/colors";
+import { Image } from "expo-image";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -14,10 +15,12 @@ export default function Page() {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSignInPress = async () => {
     if (!isLoaded) return;
 
+    setIsLoading(true);
     try {
       const signInAttempt = await signIn.create({
         identifier: emailAddress,
@@ -33,14 +36,17 @@ export default function Page() {
     } catch (err) {
       if (err.errors?.[0]?.code === "form_password_incorrect") {
         setError("Password is incorrect. Please try again.");
-      } else {
-        setError("An error occurred. Please try again.");
-      }
-      if (err.errors?.[0]?.code === "form_identifier_not_found") {
+      } else if (err.errors?.[0]?.code === "form_identifier_not_found") {
         setError("Couldn't find your account. Please check your email.");
+      } else if (err.errors?.[0]?.code === "form_param_format_invalid") {
+        setError("Please enter a valid email address.");
+      } else if (!emailAddress || !password) {
+        setError("Please fill in all fields before signing in.");
       } else {
         setError("An error occurred. Please try again.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -51,6 +57,7 @@ export default function Page() {
       enableOnAndroid={true}
       enableAutomaticScroll={true}
       extraScrollHeight={30}
+      showsVerticalScrollIndicator={false}
     >
       <View style={styles.container}>
         <Image
@@ -87,8 +94,13 @@ export default function Page() {
           onChangeText={(password) => setPassword(password)}
         />
 
-        <TouchableOpacity style={styles.button} onPress={onSignInPress}>
-          <Text style={styles.buttonText}>Sign In</Text>
+        <TouchableOpacity
+          style={[styles.button, isLoading && styles.buttonDisabled]}
+          onPress={onSignInPress}
+        >
+          <Text style={styles.buttonText}>
+            {isLoading ? "Signing In..." : "Sign In"}
+          </Text>
         </TouchableOpacity>
 
         <View style={styles.footerContainer}>

@@ -9,6 +9,7 @@ const NoTransactionsFound = () => {
 
   return (
     <View style={styles.emptyState}>
+      <Text style={styles.emptyStateText}>Pull down to refresh</Text>
       <Ionicons
         name="receipt-outline"
         size={60}

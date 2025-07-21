@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { styles } from "@/assets/styles/auth.styles.js";
@@ -13,18 +13,22 @@ export default function SignUpScreen() {
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSignUpPress = async () => {
     if (!isLoaded) return;
 
+    setIsLoading(true);
     try {
       await signUp.create({
         emailAddress,
         password,
+        username,
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
@@ -32,21 +36,27 @@ export default function SignUpScreen() {
     } catch (err) {
       if (err.errors?.[0]?.code === "form_identifier_exists") {
         setError("That email address is already in use. Please try another.");
-      } else {
-        setError("An error occurred. Please try again.");
-      }
-      if (err.errors?.[0]?.code === "form_password_length_too_short") {
+      } else if (err.errors?.[0]?.code === "form_param_format_invalid") {
+        setError("Please enter a valid email address.");
+      } else if (err.errors?.[0]?.code === "form_username_invalid_length") {
+        setError("Username must be between 3 and 30 characters.");
+      } else if (err.errors?.[0]?.code === "form_password_length_too_short") {
         setError("Passwords must be 8 characters or more.");
+      } else if (!username || !emailAddress || !password) {
+        setError("Please fill in all fields before signing up.");
       } else {
         setError("An error occurred. Please try again.");
       }
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const onVerifyPress = async () => {
     if (!isLoaded) return;
 
+    setIsLoading(true);
     try {
       const signUpAttempt = await signUp.attemptEmailAddressVerification({
         code,
@@ -64,6 +74,8 @@ export default function SignUpScreen() {
       } else {
         setError("An error occurred. Please try again.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -90,8 +102,13 @@ export default function SignUpScreen() {
           onChangeText={(code) => setCode(code)}
         />
 
-        <TouchableOpacity onPress={onVerifyPress} style={styles.button}>
-          <Text style={styles.buttonText}>Verify</Text>
+        <TouchableOpacity
+          onPress={onVerifyPress}
+          style={[styles.button, isLoading && styles.buttonDisabled]}
+        >
+          <Text style={styles.buttonText}>
+            {isLoading ? "Verifying..." : "Verify"}
+          </Text>
         </TouchableOpacity>
       </View>
     );
@@ -103,6 +120,7 @@ export default function SignUpScreen() {
       contentContainerStyle={{ flexGrow: 1 }}
       enableOnAndroid={true}
       enableAutomaticScroll={true}
+      showsVerticalScrollIndicator={false}
     >
       <View style={styles.container}>
         <Image
@@ -125,6 +143,14 @@ export default function SignUpScreen() {
         <TextInput
           style={[styles.input, error && styles.errorInput]}
           autoCapitalize="none"
+          value={username}
+          placeholderTextColor="#9A8478"
+          placeholder="Enter username"
+          onChangeText={(username) => setUsername(username)}
+        />
+        <TextInput
+          style={[styles.input, error && styles.errorInput]}
+          autoCapitalize="none"
           value={emailAddress}
           placeholderTextColor="#9A8478"
           placeholder="Enter email"
@@ -140,8 +166,13 @@ export default function SignUpScreen() {
           onChangeText={(password) => setPassword(password)}
         />
 
-        <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
-          <Text style={styles.buttonText}>Sign Up</Text>
+        <TouchableOpacity
+          style={[styles.button, isLoading && styles.buttonDisabled]}
+          onPress={onSignUpPress}
+        >
+          <Text style={styles.buttonText}>
+            {isLoading ? "Signing Up..." : "Sign Up"}
+          </Text>
         </TouchableOpacity>
 
         <View style={styles.footerContainer}>
