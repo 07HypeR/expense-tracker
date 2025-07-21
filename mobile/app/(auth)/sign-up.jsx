@@ -59,7 +59,6 @@ export default function SignUpScreen() {
         setError("An error occurred. Please try again.");
       }
       console.log(err);
-      console.error(JSON.stringify(err, null, 2));
     } finally {
       setIsLoading(false);
     }
