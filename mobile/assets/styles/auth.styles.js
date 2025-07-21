@@ -46,6 +46,9 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
   },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
   footerContainer: {
     flexDirection: "row",
     justifyContent: "center",
