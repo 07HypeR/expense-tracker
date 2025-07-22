@@ -82,6 +82,8 @@ export default function SignUpScreen() {
     } catch (err) {
       if (err.errors?.[0]?.code === "form_code_incorrect") {
         setError("Verification code is incorrect. Please try again.");
+      } else if (!code) {
+        setError("Please enter the verification code.");
       } else {
         setError("An error occurred. Please try again.");
       }
