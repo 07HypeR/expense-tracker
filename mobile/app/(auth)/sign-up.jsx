@@ -7,10 +7,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../constants/colors";
 import { Image } from "expo-image";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useTheme } from "@/context/ThemeContext";
+import { authStyles } from "@/assets/styles/auth.styles";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
+  const { COLORS } = useTheme();
+  const styles = authStyles(COLORS);
 
   const [emailAddress, setEmailAddress] = useState("");
   const [username, setUsername] = useState("");

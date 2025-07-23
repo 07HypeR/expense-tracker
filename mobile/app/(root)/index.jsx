@@ -11,18 +11,24 @@ import {
 } from "react-native";
 import { SignOutButton } from "@/components/SignOutButton";
 import { useTransactions } from "../../hooks/useTransactions";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PageLoader from "../../components/PageLoader";
-import { styles } from "../../assets/styles/home.styles";
+import { homeStyles } from "../../assets/styles/home.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { BalanceCard } from "../../components/BalanceCard";
 import { TransactionItem } from "../../components/TransactionItem";
 import NoTransactionsFound from "../../components/NoTransactionsFound";
 import { COLORS } from "@/constants/colors";
+import { useTheme } from "@/context/ThemeContext";
+import ThemeToggler from "../../components/ThemeToggler";
+import ActionSheet from "react-native-actions-sheet";
 
 export default function Home() {
   const { user } = useUser();
   const router = useRouter();
+  const { COLORS } = useTheme();
+  const styles = homeStyles(COLORS);
+  const actionSheetRef = useRef(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const { transactions, summary, isLoading, loadData, deleteTransaction } =
@@ -84,6 +90,12 @@ export default function Home() {
               <Ionicons name="add" size={20} color="#FFF" />
               <Text style={styles.addButtonText}>Add</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.settingButton}
+              onPress={() => actionSheetRef.current.show()}
+            >
+              <Ionicons name="settings-outline" size={22} color={COLORS.text} />
+            </TouchableOpacity>
             <SignOutButton />
           </View>
         </View>
@@ -113,6 +125,9 @@ export default function Home() {
           />
         }
       />
+      <ActionSheet ref={actionSheetRef} gestureEnabled>
+        <ThemeToggler hideActionSheet={() => actionSheetRef.current.hide()} />
+      </ActionSheet>
     </View>
   );
 }

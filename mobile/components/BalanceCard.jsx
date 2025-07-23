@@ -1,8 +1,11 @@
 import { View, Text } from "react-native";
-import { styles } from "../assets/styles/home.styles";
+import { homeStyles, styles } from "../assets/styles/home.styles";
 import { COLORS } from "../constants/colors";
+import { useTheme } from "@/context/ThemeContext";
 
 export const BalanceCard = ({ summary }) => {
+  const { COLORS } = useTheme();
+  const styles = homeStyles(COLORS);
   return (
     <View style={styles.balanceCard}>
       <Text style={styles.balanceTitle}>Total Balance</Text>

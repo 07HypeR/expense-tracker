@@ -7,10 +7,14 @@ import { styles } from "../../assets/styles/auth.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../constants/colors";
 import { Image } from "expo-image";
+import { useTheme } from "@/context/ThemeContext";
+import { authStyles } from "@/assets/styles/auth.styles";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
+  const { COLORS } = useTheme();
+  const styles = authStyles(COLORS);
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
