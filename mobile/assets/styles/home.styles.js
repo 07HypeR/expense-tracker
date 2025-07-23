@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../constants/colors";
 
 export const homeStyles = (COLORS) =>
   StyleSheet.create({
@@ -7,12 +6,33 @@ export const homeStyles = (COLORS) =>
       flex: 1,
       backgroundColor: COLORS.background,
     },
+    drawerContainer: {
+      flex: 1,
+      paddingTop: 30,
+      backgroundColor: COLORS.background,
+    },
+    drawerCloseContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+      paddingTop: 70,
+    },
+    drawerSelection: {
+      marginTop: 20,
+    },
     content: {
       padding: 20,
       paddingBottom: 0,
     },
     header: {
       flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 20,
+      paddingHorizontal: 0,
+      paddingVertical: 12,
+    },
+    drawerHeader: {
+      flexDirection: "column",
       justifyContent: "space-between",
       alignItems: "center",
       marginBottom: 20,
@@ -311,5 +331,11 @@ export const homeStyles = (COLORS) =>
       fontWeight: "700",
       marginBottom: 16,
       textAlign: "center",
+    },
+    drawerLogo: {
+      width: 60,
+      height: 60,
+      borderRadius: 100,
+      marginBottom: 10,
     },
   });

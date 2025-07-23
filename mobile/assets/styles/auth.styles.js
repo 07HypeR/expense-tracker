@@ -1,4 +1,3 @@
-// assets/styles/auth.styles.js
 import { StyleSheet } from "react-native";
 
 export const authStyles = (COLORS) =>
