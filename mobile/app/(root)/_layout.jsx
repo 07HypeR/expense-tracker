@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/clerk-expo";
 import { Redirect } from "expo-router";
-import { Stack } from "expo-router/stack";
+import { Drawer } from "expo-router/drawer";
+import CustomDrawerContent from "@/components/CustomDrawer";
 
 export default function Layout() {
   const { isSignedIn, isLoaded } = useUser();
@@ -8,5 +9,10 @@ export default function Layout() {
   if (!isLoaded) return null;
   if (!isSignedIn) return <Redirect href="/sign-in" />;
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Drawer
+      screenOptions={{ headerShown: false }}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    />
+  );
 }

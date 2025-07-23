@@ -1,9 +1,8 @@
-import { homeStyles, styles } from "@/assets/styles/home.styles";
-import { COLORS } from "@/constants/colors";
+import { homeStyles } from "@/assets/styles/home.styles";
 import { useTheme } from "@/context/ThemeContext";
 import { useClerk } from "@clerk/clerk-expo";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity, Text } from "react-native";
 
 export const SignOutButton = () => {
   const { signOut } = useClerk();
@@ -16,8 +15,20 @@ export const SignOutButton = () => {
     ]);
   };
   return (
-    <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>
-      <Ionicons name="log-out-outline" size={22} color={COLORS.text} />
+    <TouchableOpacity
+      style={[
+        styles.logoutButton,
+        {
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+          gap: 10,
+        },
+      ]}
+      onPress={handleSignOut}
+    >
+      <Ionicons name="log-out-outline" size={22} color="red" />
+      <Text style={{ fontWeight: 600, color: "red" }}>Log out</Text>
     </TouchableOpacity>
   );
 };

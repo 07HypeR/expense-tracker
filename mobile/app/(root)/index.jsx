@@ -1,5 +1,6 @@
 import { useUser } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import {
   Alert,
   FlatList,
@@ -9,26 +10,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SignOutButton } from "@/components/SignOutButton";
-import { useTransactions } from "../../hooks/useTransactions";
-import { useEffect, useRef, useState } from "react";
-import PageLoader from "../../components/PageLoader";
-import { homeStyles } from "../../assets/styles/home.styles";
+import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import PageLoader from "../../components/PageLoader";
 import { BalanceCard } from "../../components/BalanceCard";
 import { TransactionItem } from "../../components/TransactionItem";
 import NoTransactionsFound from "../../components/NoTransactionsFound";
-import { COLORS } from "@/constants/colors";
+import { useTransactions } from "../../hooks/useTransactions";
 import { useTheme } from "@/context/ThemeContext";
-import ThemeToggler from "../../components/ThemeToggler";
-import ActionSheet from "react-native-actions-sheet";
+import { homeStyles } from "@/assets/styles/home.styles";
 
 export default function Home() {
   const { user } = useUser();
   const router = useRouter();
+  const navigation = useNavigation();
   const { COLORS } = useTheme();
   const styles = homeStyles(COLORS);
-  const actionSheetRef = useRef(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const { transactions, summary, isLoading, loadData, deleteTransaction } =
@@ -81,6 +78,7 @@ export default function Home() {
               </Text>
             </View>
           </View>
+
           {/* RIGHT */}
           <View style={styles.headerRight}>
             <TouchableOpacity
@@ -92,21 +90,25 @@ export default function Home() {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.settingButton}
-              onPress={() => actionSheetRef.current.show()}
+              onPress={() => navigation.openDrawer()}
             >
               <Ionicons name="settings-outline" size={22} color={COLORS.text} />
             </TouchableOpacity>
-            <SignOutButton />
+            {/* Optional sign out */}
+            {/* <SignOutButton /> */}
           </View>
         </View>
 
+        {/* BALANCE CARD */}
         <BalanceCard summary={summary} />
 
+        {/* TRANSACTIONS HEADER */}
         <View style={styles.transactionsHeaderContainer}>
           <Text style={styles.sectionTitle}>Recent Transactions</Text>
         </View>
       </View>
 
+      {/* TRANSACTIONS LIST */}
       <FlatList
         style={styles.transactionsList}
         contentContainerStyle={styles.transactionsListContent}
@@ -125,9 +127,6 @@ export default function Home() {
           />
         }
       />
-      <ActionSheet ref={actionSheetRef} gestureEnabled>
-        <ThemeToggler hideActionSheet={() => actionSheetRef.current.hide()} />
-      </ActionSheet>
     </View>
   );
 }

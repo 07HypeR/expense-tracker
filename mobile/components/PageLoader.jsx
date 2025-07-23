@@ -1,6 +1,5 @@
 import { View, ActivityIndicator } from "react-native";
-import { homeStyles, styles } from "../assets/styles/home.styles";
-import { COLORS } from "@/constants/colors";
+import { homeStyles } from "../assets/styles/home.styles";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function PageLoader() {

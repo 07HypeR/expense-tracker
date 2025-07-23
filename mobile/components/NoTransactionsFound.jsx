@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
-import { homeStyles, styles } from "../assets/styles/home.styles";
-import { COLORS } from "../constants/colors";
+import { homeStyles } from "../assets/styles/home.styles";
 import { useRouter } from "expo-router";
 import { useTheme } from "@/context/ThemeContext";
 
