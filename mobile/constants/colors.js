@@ -57,5 +57,16 @@ export const THEMES = {
   ocean: oceanTheme,
 };
 
-// 👇 change this to switch theme
-export const COLORS = THEMES.coffee;
+let currentThemeKey = "coffee"; // default
+
+export const setTheme = (themeKey) => {
+  if (THEMES[themeKey]) {
+    currentThemeKey = themeKey;
+  } else {
+    console.warn(`Unknown theme: ${themeKey}`);
+  }
+};
+
+export const getColors = () => {
+  return THEMES[currentThemeKey];
+};
