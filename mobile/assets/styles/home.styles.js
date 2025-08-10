@@ -294,9 +294,17 @@ export const homeStyles = (COLORS) =>
     actionSheetContainer: {
       backgroundColor: COLORS.card,
       borderRadius: 16,
-      padding: 30,
+      padding: 20,
       alignItems: "center",
       justifyContent: "center",
+    },
+    actionSheetIndicator: {
+      width: 60,
+      height: 6,
+      borderRadius: 3,
+      backgroundColor: COLORS.textLight,
+      opacity: 0.6,
+      marginBottom: 20,
     },
     actionSheetcancelButton: {
       marginTop: 12,
