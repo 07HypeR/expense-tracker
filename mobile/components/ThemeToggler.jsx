@@ -16,12 +16,15 @@ const THEME_COLORS = {
   ocean: { borderColor: "#B3E5FC", textColor: "#4FC3F7" },
 };
 
-const ThemeToggler = () => {
+const ThemeToggler = ({ hideActionSheet }) => {
   const { COLORS, setTheme, themeKey } = useTheme();
   const style = homeStyles(COLORS);
 
   const handleThemeChange = (key) => {
     setTheme(key);
+    if (hideActionSheet) {
+      setTimeout(() => hideActionSheet(), 250);
+    }
   };
 
   return (
@@ -60,6 +63,22 @@ const ThemeToggler = () => {
           );
         })}
       </View>
+
+      {/* Cancel Button */}
+      <TouchableOpacity
+        onPress={hideActionSheet}
+        style={[
+          style.actionSheetcancelButton,
+          {
+            backgroundColor: COLORS.card,
+          },
+        ]}
+        activeOpacity={0.8}
+      >
+        <Text style={{ fontSize: 16, fontWeight: "500" }}>Cancel</Text>
+      </TouchableOpacity>
+
+      <View style={{ marginBottom: 30 }} />
     </View>
   );
 };
