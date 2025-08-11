@@ -4,9 +4,9 @@ import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTheme } from "@/context/ThemeContext";
 import { authStyles } from "@/assets/styles/auth.styles";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -130,14 +130,11 @@ export default function SignUpScreen() {
   }
 
   return (
-    <KeyboardAwareScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{ flexGrow: 1 }}
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <KeyboardAwareScrollView
+        bottomOffset={62}
+        showsVerticalScrollIndicator={false}
+      >
         <Image
           source={require("../../assets/images/revenue-i2.png")}
           style={styles.illustration}
@@ -196,7 +193,7 @@ export default function SignUpScreen() {
             <Text style={styles.linkText}>Sign in</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </View>
   );
 }

@@ -2,11 +2,11 @@ import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useTheme } from "@/context/ThemeContext";
 import { authStyles } from "@/assets/styles/auth.styles";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -60,15 +60,11 @@ export default function Page() {
   };
 
   return (
-    <KeyboardAwareScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{ flexGrow: 1 }}
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
-      extraScrollHeight={30}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <KeyboardAwareScrollView
+        bottomOffset={62}
+        showsVerticalScrollIndicator={false}
+      >
         <Image
           source={require("../../assets/images/revenue-i4.png")}
           style={styles.illustration}
@@ -121,7 +117,7 @@ export default function Page() {
             </TouchableOpacity>
           </Link>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </View>
   );
 }
